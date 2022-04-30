@@ -1,0 +1,4 @@
+"/Users/williamstrickland/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/213.6461.46/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=/Users/williamstrickland/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/213.6461.46/CLion.app/Contents/bin/ninja/mac/ninja" -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G Ninja /Users/williamstrickland/CLionProjects/Assignment2
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/williamstrickland/CLionProjects/Assignment2/cmake-build-debug
