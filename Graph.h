@@ -37,8 +37,11 @@ private:
 public:
     Graph() {
         V = 0;
-        array = NULL;
+
         E = 0;
+        array = new AdjList[V];
+        array[0].head = NULL;
+        array[0].tail = NULL;
     }
 
     Graph(int V) {
@@ -237,9 +240,11 @@ public:
         this->E = E;
         srand (time(NULL));
         if (type == "COMPLETE") {
+            this->E=V*(V-1)/2;
             genCompleteGraph(V);
         }
         else if (type == "CYCLE") {
+            this->E=V;
             genCycleGraph(V);
         }
         else if (type == "RANDOM") {
