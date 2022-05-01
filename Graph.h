@@ -30,7 +30,7 @@ struct AdjList {
 class Graph {
 
 private:
-    int V;
+    int V,E;
     vector<pair<int,int>> enumerated_edges;
     struct AdjList *array;
 
@@ -38,6 +38,7 @@ public:
     Graph() {
         V = 0;
         array = NULL;
+        E = 0;
     }
 
     Graph(int V) {
@@ -47,6 +48,12 @@ public:
             array[i].head = NULL;
             array[i].tail = NULL;
         }
+    }
+    int getNumVertices() {
+        return V;
+    }
+    int getNumEdges() {
+        return E;
     }
 
     void enumerateEdges(){
@@ -94,6 +101,21 @@ public:
         for (v = 0; v < V; ++v) {
             AdjListNode *pCrawl = array[v].head;
             cout << "\n Adjacency list of vertex " << v << "\n head ";
+            while (pCrawl) {
+                cout << "-> " << pCrawl->data;
+                pCrawl = pCrawl->next;
+            }
+            cout << "-> tail";
+            cout << endl;
+        }
+    }
+
+
+    void printDegreeGraph() {
+        int v;
+        for (v = 0; v < V; ++v) {
+            AdjListNode *pCrawl = array[v].head;
+            cout << "\n Vertices with Degree " << v << "\n head ";
             while (pCrawl) {
                 cout << "-> " << pCrawl->data;
                 pCrawl = pCrawl->next;
@@ -211,14 +233,16 @@ public:
     }
 
     void genGraph(int V, int E, string type, string distribution) {
+        this->V = V;
+        this->E = E;
         srand (time(NULL));
         if (type == "COMPLETE") {
             genCompleteGraph(V);
         }
-        if (type == "CYCLE") {
+        else if (type == "CYCLE") {
             genCycleGraph(V);
         }
-        if (type == "RANDOM") {
+        else if (type == "RANDOM") {
 
             //enumerate nums
             enumerateEdges();
@@ -264,26 +288,49 @@ public:
             }
         }
     }
-};
-
-
-void printSerialization(Graph g, int V) {
-    ofstream myFile;
-    myFile.open("output.txt");
-    myFile << V << endl;
-    int lastLine = V;
-    for (int i = 1; i <= V; i++) {
-        myFile << lastLine + g.getNumEdges(i - 1) << endl;
-        lastLine = lastLine + g.getNumEdges(i - 1);
+    AdjList* getAdjList(int v) {
+        return &array[v];
     }
-    for (int i = 0; i < V; i++) {
-        vector<int> vEdges = g.getEdges(i);
-        for (int j = 0; j < vEdges.size(); j++) {
-            myFile << vEdges[j] << endl;
+    int getDegree(int v) {
+        int size=0;
+        AdjListNode *pCrawl = array[v].head;
+        while (pCrawl) {
+            size++;
+            pCrawl = pCrawl->next;
+        }
+        return size;
+    }
+    void genDegreeList(){
+        int v;
+        for (v = 0; v < V; ++v) {
+            AdjListNode *pCrawl = array[v].head;
+            while (pCrawl) {
+                pCrawl = pCrawl->next;
+            }
         }
     }
+};
 
-}
+//
+//void printSerialization(Graph g, int V) {
+//    ofstream myFile;
+//    myFile.open("output.txt");
+//    myFile << V << endl;
+//    int lastLine = V;
+//    for (int i = 1; i <= V; i++) {
+//        myFile << lastLine + g.getNumEdges(i - 1) << endl;
+//        lastLine = lastLine + g.getNumEdges(i - 1);
+//    }
+//    for (int i = 0; i < V; i++) {
+//        vector<int> vEdges = g.getEdges(i);
+//        for (int j = 0; j < vEdges.size(); j++) {
+//            myFile << vEdges[j] << endl;
+//        }
+//    }
+//
+//}
+
+
 
 
 

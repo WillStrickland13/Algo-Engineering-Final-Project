@@ -78,6 +78,12 @@ build CMakeFiles/Assignment2.dir/main.cpp.o: CXX_COMPILER__Assignment2_Debug /Us
   OBJECT_DIR = CMakeFiles/Assignment2.dir
   OBJECT_FILE_DIR = CMakeFiles/Assignment2.dir
 
+build CMakeFiles/Assignment2.dir/Runner.cpp.o: CXX_COMPILER__Assignment2_Debug /Users/williamstrickland/CLionProjects/Assignment2/Runner.cpp || cmake_object_order_depends_target_Assignment2
+  DEP_FILE = CMakeFiles/Assignment2.dir/Runner.cpp.o.d
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk -std=gnu++14
+  OBJECT_DIR = CMakeFiles/Assignment2.dir
+  OBJECT_FILE_DIR = CMakeFiles/Assignment2.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Assignment2
@@ -86,7 +92,7 @@ build CMakeFiles/Assignment2.dir/main.cpp.o: CXX_COMPILER__Assignment2_Debug /Us
 #############################################
 # Link the executable Assignment2
 
-build Assignment2: CXX_EXECUTABLE_LINKER__Assignment2_Debug CMakeFiles/Assignment2.dir/main.cpp.o
+build Assignment2: CXX_EXECUTABLE_LINKER__Assignment2_Debug CMakeFiles/Assignment2.dir/main.cpp.o CMakeFiles/Assignment2.dir/Runner.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk
   OBJECT_DIR = CMakeFiles/Assignment2.dir
   POST_BUILD = :

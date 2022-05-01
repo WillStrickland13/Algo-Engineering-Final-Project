@@ -3,4 +3,4 @@ project(Assignment2)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Assignment2 main.cpp Graph.h)
+add_executable(Assignment2 main.cpp Graph.h Vertex.h Runner.cpp Runner.h)
