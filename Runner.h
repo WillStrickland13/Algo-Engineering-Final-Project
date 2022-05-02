@@ -13,11 +13,13 @@ private:
     Graph edgeList;
     Graph edgeListTemp;
     Graph degreeList;
-    vector<Vertex> orderDeletedList;
+    AdjList orderDeletedList;
 public:
-    Runner(Graph, Graph, vector<Vertex>);
+    Runner(Graph, Graph, AdjList);
     Runner(Graph);
     void genDegreeList();
+    AdjListNode* getSmallestDegree();
+    void deleteSmallestDegree();
 };
 
 

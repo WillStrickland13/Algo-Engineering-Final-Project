@@ -3,7 +3,7 @@
 //
 
 #include "Runner.h"
-Runner::Runner(Graph edgeList, Graph degreeList, vector<Vertex> orderDeletedList) {
+Runner::Runner(Graph edgeList, Graph degreeList, AdjList orderDeletedList) {
     this->edgeList = edgeList;
     this->degreeList = degreeList;
     this->orderDeletedList = orderDeletedList;
@@ -22,4 +22,20 @@ void Runner::genDegreeList(){
     }
     edgeListTemp=edgeList;
     degreeList.printDegreeGraph();
+}
+AdjListNode* Runner::getSmallestDegree() {
+    int smallestDegree;
+    AdjListNode *temp;
+    for(int i=0;i<degreeList.getNumVertices();i++){
+        if(degreeList[i].head!=NULL){
+            int smallestDegree=i;
+            temp = degreeList[i].head;
+            return temp;
+        }
+    }
+}
+void Runner::deleteSmallestDegree() {
+    AdjListNode* toDelete = getSmallestDegree();
+    orderDeletedList.addAdjListNode(toDelete);
+    edgeList.removeVertex(toDelete->data);
 }

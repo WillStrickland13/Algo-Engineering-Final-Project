@@ -26,6 +26,65 @@ struct AdjListNode {
 struct AdjList {
     struct AdjListNode *head;
     struct AdjListNode *tail;
+    AdjListNode& operator[](int index)
+    {
+        AdjListNode* node = head;
+        for (int i = 0; i < index; i++)
+        {
+            node = node->next;
+        }
+        return *node;
+    }
+    int size()
+    {
+        int count = 0;
+        AdjListNode* node = head;
+        while (node != nullptr)
+        {
+            count++;
+            node = node->next;
+        }
+        return count;
+    }
+    void addAdjListNode(AdjListNode* newNode)
+    {
+
+        if (head == nullptr)
+        {
+            head = newNode;
+            tail = newNode;
+        }
+        else
+        {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+    void removeAdjListNode(int index){
+        AdjListNode* node = head;
+        for (int i = 0; i < index; i++)
+        {
+            node = node->next;
+        }
+        if (node->prev != nullptr)
+        {
+            node->prev->next = node->next;
+        }
+        if (node->next != nullptr)
+        {
+            node->next->prev = node->prev;
+        }
+        if (node == head)
+        {
+            head = node->next;
+        }
+        if (node == tail)
+        {
+            tail = node->prev;
+        }
+        delete node;
+    }
 };
 
 class Graph {
@@ -57,10 +116,32 @@ public:
         }
     }
 
+    void removeVertex(int v) {
+        //need to go through all vertices with v as an edge and remove v from their edges
+        for(int i=0;i<array[v].size();i++){
+            //get edge of vertex to remove
+            int index=array[v][i].data;
+            for(int j=0;j<array[index].size();j++){
+                if(array[index][j].data==v){
+                    array[index].removeAdjListNode(j);
+                    break;
+                }
+            }
+        }
+
+
+        //then set v to null
+        array[v].head = NULL;
+
+
+
+    }
+
     //return the number of vertices
     int getNumVertices() {
         return V;
     }
+
 
     //return the number of edges
     int getNumEdges() {
@@ -129,15 +210,17 @@ public:
     void printGraph() {
         int v;
         for (v = 0; v < V; ++v) {
-            AdjListNode *pCrawl = array[v].head;
+            if(array[v].head!=NULL) {
+                AdjListNode *pCrawl = array[v].head;
 
-            cout << "\n Adjacency list of vertex " << v << "\n head ";
-            while (pCrawl) {
-                cout << "-> " << pCrawl->data;
-                pCrawl = pCrawl->next;
+                cout << "\n Adjacency list of vertex " << v << "\n head ";
+                while (pCrawl) {
+                    cout << "-> " << pCrawl->data;
+                    pCrawl = pCrawl->next;
+                }
+                cout << "-> tail";
+                cout << endl;
             }
-            cout << "-> tail";
-            cout << endl;
         }
     }
 
@@ -356,6 +439,13 @@ public:
         }
         return size;
     }
+
+    AdjList& operator[](int index)
+    {
+        return array[index];
+
+    }
+
 
 };
 
