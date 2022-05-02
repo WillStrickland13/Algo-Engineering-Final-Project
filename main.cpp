@@ -18,6 +18,5 @@ int main() {
     runner.genDegreeList();
 
 
-
     return 0;
 }

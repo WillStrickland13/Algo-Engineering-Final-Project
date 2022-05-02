@@ -36,6 +36,8 @@ private:
     struct AdjList *array;
 
 public:
+
+    //default constructor
     Graph() {
         V = 0;
 
@@ -45,6 +47,7 @@ public:
         array[0].tail = NULL;
     }
 
+    //create a graph with V vertices
     Graph(int V) {
         this->V = V;
         array = new AdjList[V];
@@ -53,13 +56,18 @@ public:
             array[i].tail = NULL;
         }
     }
+
+    //return the number of vertices
     int getNumVertices() {
         return V;
     }
+
+    //return the number of edges
     int getNumEdges() {
         return E;
     }
 
+    //enumerate the edges, used for the random graph generator to avoid duplicate edges
     void enumerateEdges(){
         cout<<"Enumerating edges..."<<endl;
         for (int i = 0; i < V; i++) {
@@ -71,6 +79,7 @@ public:
             }
         }
     }
+
     /*
      * Creating New Adjacency List Node
      */
@@ -98,6 +107,7 @@ public:
 
     }
 
+    //used to create the degree list graph, and adds a pointer to the degree list for each node in original graph
     void addEdgeToDegreeList(int src, int data,Graph& edgeList) {
         AdjListNode *newNode = newAdjListNode(data);
         if(edgeList.array[data].head!=NULL) {
@@ -120,6 +130,7 @@ public:
         int v;
         for (v = 0; v < V; ++v) {
             AdjListNode *pCrawl = array[v].head;
+
             cout << "\n Adjacency list of vertex " << v << "\n head ";
             while (pCrawl) {
                 cout << "-> " << pCrawl->data;
@@ -130,7 +141,13 @@ public:
         }
     }
 
+    //used to make sure the pointer from graph to degree list is correct
+    void testPtr(int v){
+        cout<<array[v].head->degreeListPointer->data<<endl;
+    }
 
+
+    //print the degree list
     void printDegreeGraph() {
         int v;
         for (v = 0; v < V; ++v) {
@@ -145,6 +162,7 @@ public:
         }
     }
 
+    //get number of edges of a specific vertex
     int getNumEdges(int vertex) {
         if (vertex < 0) {
             return 0;
@@ -158,6 +176,7 @@ public:
         return numEdges;
     }
 
+    //get edges of a specific vertex
     vector<int> getEdges(int vertex) {
         vector<int> edges;
         AdjListNode *pCrawl = array[vertex].head;
@@ -168,6 +187,7 @@ public:
         return edges;
     }
 
+    //generate a complete graph with v vertices
     void genCompleteGraph(int V) {
 
         this->V = V;
@@ -192,6 +212,7 @@ public:
              << endl;
     }
 
+    //generate a cycle graph with v vertices
     void genCycleGraph(int V) {
         this->V = V;
         array = new AdjList[V];
@@ -213,6 +234,8 @@ public:
         cout << "Cycle graph with " << V << " vertices took " << duration.count() / 1000.0 << " milliseconds" << endl;
 
     }
+
+    //used for random graph generation
     vector<int> genVector(int size) {
         vector<int> nums;
         for(int i = size-1;i>=0; i--){
@@ -221,6 +244,8 @@ public:
         return nums;
     }
 
+
+    //generate a skewed number, used for generating a random index of the enumerated edges
     int genSkewedNum(vector<int> nums){
         //set seed
         unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -232,6 +257,8 @@ public:
         return distribution(generator);
 
     }
+
+    //generate a normal number, used for creating a normal index of the enumerated index
     int genNormalNum(int size){
         //set seed
         unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -243,6 +270,8 @@ public:
         return distribution(generator);
 
     }
+
+    //generate a completely pseudo-random index of the enumerated edges
     int genRandomNum (int max)
     {
         unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -252,6 +281,9 @@ public:
         return distribution(generator);
     }
 
+    //generate a random graph with v vertices and e edges, can specify the type of graph
+    //(complete, cycle, random) and if random, can specify the type of random graph
+    // (normal, skewed, uniform)
     void genGraph(int V, int E, string type, string distribution) {
         this->V = V;
         this->E = E;
@@ -310,6 +342,8 @@ public:
             }
         }
     }
+
+    //return the list of edges of a vertex in the graph
     AdjList* getAdjList(int v) {
         return &array[v];
     }
