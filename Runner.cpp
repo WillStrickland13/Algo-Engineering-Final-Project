@@ -16,8 +16,10 @@ Runner::Runner(Graph edgeList) {
 
 void Runner::genDegreeList(){
     int v;
+
     for (v = 0; v < edgeList.getNumVertices(); v++) {
-        degreeList.addEdge(edgeList.getDegree(v), v);
+        degreeList.addEdgeToDegreeList(edgeList.getDegree(v), v,edgeList);
     }
+    edgeListTemp=edgeList;
     degreeList.printDegreeGraph();
 }

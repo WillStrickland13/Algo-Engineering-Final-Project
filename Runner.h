@@ -11,6 +11,7 @@ using namespace std;
 class Runner {
 private:
     Graph edgeList;
+    Graph edgeListTemp;
     Graph degreeList;
     vector<Vertex> orderDeletedList;
 public:

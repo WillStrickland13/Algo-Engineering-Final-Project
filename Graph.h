@@ -12,11 +12,12 @@
 #include <random>
 using namespace std;
 using namespace std::chrono;
+
 struct AdjListNode {
     int data;
     struct AdjListNode *next;
     struct AdjListNode *prev;
-
+    struct AdjListNode *degreeListPointer;
 };
 
 /*
@@ -78,6 +79,7 @@ public:
         newNode->data = data;
         newNode->next = NULL;
         newNode->prev = NULL;
+        newNode->degreeListPointer = NULL;
         return newNode;
     }
 
@@ -86,6 +88,21 @@ public:
      */
     void addEdge(int src, int data) {
         AdjListNode *newNode = newAdjListNode(data);
+        newNode->prev = array[src].tail;
+        newNode->next = NULL;
+        array[src].tail = newNode;
+        if (array[src].head == NULL)
+            array[src].head = newNode;
+        else
+            newNode->prev->next = newNode;
+
+    }
+
+    void addEdgeToDegreeList(int src, int data,Graph& edgeList) {
+        AdjListNode *newNode = newAdjListNode(data);
+        if(edgeList.array[data].head!=NULL) {
+            edgeList.array[data].head->degreeListPointer = newNode;
+        }
         newNode->prev = array[src].tail;
         newNode->next = NULL;
         array[src].tail = newNode;
@@ -305,15 +322,7 @@ public:
         }
         return size;
     }
-    void genDegreeList(){
-        int v;
-        for (v = 0; v < V; ++v) {
-            AdjListNode *pCrawl = array[v].head;
-            while (pCrawl) {
-                pCrawl = pCrawl->next;
-            }
-        }
-    }
+
 };
 
 //

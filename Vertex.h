@@ -27,6 +27,28 @@ public:
         this->degree = degree;
         this->color = color;
     }
+    int getId(){
+        return id;
+    }
+    int getDegree(){
+        return degree;
+    }
+    int getColor(){
+        return color;
+    }
+    void setColor(int color){
+        this->color = color;
+    }
+    AdjList* getEdges(){
+        return edges;
+    }
+    void setEdges(AdjList* edges){
+        this->edges = edges;
+    }
+    void setDegree(int degree){
+        this->degree = degree;
+    }
+
 };
 
 #endif //ASSIGNMENT2_VERTEX_H
