@@ -37,50 +37,32 @@ void Runner::removeVertex(int v) {
                 //only first index has a degree list pointer
 
                 AdjListNode* degreePointerToChange = edgeList[index].head->degreeListPointer;
-                cout<<"degreePointerToChange: "<<degreePointerToChange->data<<endl;
                 int currDegree=edgeList.getDegree(index);
-                cout<<"currdegree "<<currDegree<<endl;
-
-//                cout<<"tail = "<<degreeList[currDegree - 1].tail->data;
 
                 if(degreeList[currDegree-1].head!=nullptr) {
 
 
-                    cout<<"step1"<<endl;
-
+                    //first remove node from current degree list
                     degreeList[currDegree].removeAdjListNodeByVertex(degreePointerToChange->data);
+
+                    //then append node to the end of degree list -1
                     degreePointerToChange->next=nullptr;
-                    cout<<"step4"<<endl;
                     degreePointerToChange->prev=degreeList[currDegree - 1].tail;
-                    cout<<"step5"<<endl;
                     degreeList[currDegree - 1].tail = degreePointerToChange;
-                    cout<<"step6"<<endl;
                     degreePointerToChange->prev->next = degreePointerToChange;
-                    cout<<"step7"<<endl;
 
-
-
-
-//                    cout<<"error1"<<endl;
-//
-//                    degreePointerToChange->prev = degreeList[currDegree - 1].tail;
-//                    cout<<"error2"<<endl;
-//                    degreeList[currDegree - 1].tail->next = degreePointerToChange;
-//
-//
-//                    cout<<"error3"<<endl;
-//                    degreeList[currDegree - 1].tail = degreePointerToChange;
                 }
+                //  case to handle if the degree list -1 is empty
                 else{
-                    cout<<"error4"<<endl;
+
                     degreeList[currDegree-1].head=degreePointerToChange;
-                    cout<<"error5"<<endl;
                     degreeList[currDegree-1].tail=degreePointerToChange;
-                    cout<<"error6"<<endl;
                     degreeList[currDegree].removeAdjListNodeByVertex(degreePointerToChange->data);
 
-
                 }
+
+                //finally remove the edge from the graph
+                edgeList[index].removeAdjListNode(j);
                 cout<<"done"<<endl;
 
                 break;
@@ -92,7 +74,7 @@ void Runner::removeVertex(int v) {
     //then set v to null
     edgeList[v].head = NULL;
     degreeList.printDegreeGraph();
-    
+
 
 }
 
