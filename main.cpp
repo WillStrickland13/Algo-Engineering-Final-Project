@@ -8,8 +8,8 @@ using namespace std::chrono;
 
 
 int main() {
-    int V = 5 ;
-    int E = 7;
+    int V = 1000 ;
+    int E = 5000;
     Graph graph(V);
     // Create graph
     graph.genGraph(V,E,"RANDOM","UNIFORM");

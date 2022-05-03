@@ -25,6 +25,7 @@ void Runner::genDegreeList(){
 }
 
 void Runner::removeVertex(int v) {
+
     //need to go through all vertices with v as an edge and remove v from their edges
     //and update the degree list
     for(int i=0;i<edgeList[v].size();i++){
@@ -43,21 +44,30 @@ void Runner::removeVertex(int v) {
 
 
                     //first remove node from current degree list
+                    //cout<<"test1"<<endl;
                     degreeList[currDegree].removeAdjListNodeByVertex(degreePointerToChange->data);
 
                     //then append node to the end of degree list -1
+                    //cout<<"test2"<<endl;
                     degreePointerToChange->next=nullptr;
+                    //cout<<"test3"<<endl;
                     degreePointerToChange->prev=degreeList[currDegree - 1].tail;
+                    //cout<<"test4"<<endl;
                     degreeList[currDegree - 1].tail = degreePointerToChange;
+                    //cout<<"test5"<<endl;
                     degreePointerToChange->prev->next = degreePointerToChange;
 
                 }
                 //  case to handle if the degree list -1 is empty
                 else{
 
+                    //cout<<"test6"<<endl;
                     degreeList[currDegree-1].head=degreePointerToChange;
+                    //cout<<"test7"<<endl;
                     degreeList[currDegree-1].tail=degreePointerToChange;
+                    //cout<<"test8"<<endl;
                     degreeList[currDegree].removeAdjListNodeByVertex(degreePointerToChange->data);
+                    //cout<<"test9"<<endl;
 
                 }
 

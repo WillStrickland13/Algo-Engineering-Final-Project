@@ -270,7 +270,7 @@ public:
     //print the degree list
     void printDegreeGraph() {
         int v;
-        for (v = 0; v <= V; ++v) {
+        for (v = 0; v <= V-1; ++v) {
             AdjListNode *pCrawl = array[v].head;
             cout << "\n Vertices with Degree " << v << "\n head ";
             while (pCrawl) {
