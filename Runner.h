@@ -17,6 +17,7 @@ private:
 public:
     Runner(Graph, Graph, AdjList);
     Runner(Graph);
+    void removeVertex(int v);
     void genDegreeList();
     AdjListNode* getSmallestDegree();
     void deleteSmallestDegree();

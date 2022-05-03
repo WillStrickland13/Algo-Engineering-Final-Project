@@ -18,6 +18,7 @@ struct AdjListNode {
     struct AdjListNode *next;
     struct AdjListNode *prev;
     struct AdjListNode *degreeListPointer;
+    int degree;
 };
 
 /*
@@ -62,6 +63,7 @@ struct AdjList {
         }
     }
     void removeAdjListNode(int index){
+        cout<<"starting deletion"<<endl;
         AdjListNode* node = head;
         for (int i = 0; i < index; i++)
         {
@@ -84,6 +86,36 @@ struct AdjList {
             tail = node->prev;
         }
         delete node;
+
+        cout<< "Node removed" << endl;
+    }
+
+    void removeAdjListNodeByVertex(int v){
+        AdjListNode* node = head;
+        while (node != nullptr)
+        {
+            if (node->data == v)
+            {
+                if (node->prev != nullptr)
+                {
+                    node->prev->next = node->next;
+                }
+                if (node->next != nullptr)
+                {
+                    node->next->prev = node->prev;
+                }
+                if (node == head)
+                {
+                    head = node->next;
+                }
+                if (node == tail)
+                {
+                    tail = node->prev;
+                }
+                return;
+            }
+            node = node->next;
+        }
     }
 };
 
@@ -118,11 +150,16 @@ public:
 
     void removeVertex(int v) {
         //need to go through all vertices with v as an edge and remove v from their edges
+        //and update the degree list
         for(int i=0;i<array[v].size();i++){
             //get edge of vertex to remove
             int index=array[v][i].data;
             for(int j=0;j<array[index].size();j++){
+                //if the edge is v, remove it
                 if(array[index][j].data==v){
+                    AdjListNode* degreePointerToChange = array[index][j].degreeListPointer;
+
+                    //degreeList[degreePointerToChange.data-1].tail = degreePointerToChange
                     array[index].removeAdjListNode(j);
                     break;
                 }
@@ -152,7 +189,7 @@ public:
     void enumerateEdges(){
         cout<<"Enumerating edges..."<<endl;
         for (int i = 0; i < V; i++) {
-            for (int j = 0; j < V; j++) {
+            for (int j = i+1; j < V; j++) {
                 if (i != j) {
                     pair<int, int> edge = make_pair(i, j);
                     enumerated_edges.push_back(edge);
@@ -233,7 +270,7 @@ public:
     //print the degree list
     void printDegreeGraph() {
         int v;
-        for (v = 0; v < V; ++v) {
+        for (v = 0; v <= V; ++v) {
             AdjListNode *pCrawl = array[v].head;
             cout << "\n Vertices with Degree " << v << "\n head ";
             while (pCrawl) {
