@@ -17,7 +17,7 @@ struct AdjListNode {
     int data;
     struct AdjListNode *next;
     struct AdjListNode *prev;
-    struct AdjListNode *degreeListPointer;
+
     int degree;
 };
 
@@ -27,6 +27,7 @@ struct AdjListNode {
 struct AdjList {
     struct AdjListNode *head;
     struct AdjListNode *tail;
+    struct AdjListNode *degreeListPointer;
     AdjListNode& operator[](int index)
     {
         AdjListNode* node = head;
@@ -92,6 +93,7 @@ struct AdjList {
 
     void removeAdjListNodeByVertex(int v){
         AdjListNode* node = head;
+        int i=0;
         while (node != nullptr)
         {
             if (node->data == v)
@@ -115,6 +117,7 @@ struct AdjList {
                 return;
             }
             node = node->next;
+            i++;
         }
     }
 };
@@ -157,7 +160,7 @@ public:
             for(int j=0;j<array[index].size();j++){
                 //if the edge is v, remove it
                 if(array[index][j].data==v){
-                    AdjListNode* degreePointerToChange = array[index][j].degreeListPointer;
+                    AdjListNode* degreePointerToChange = array[index].degreeListPointer;
 
                     //degreeList[degreePointerToChange.data-1].tail = degreePointerToChange
                     array[index].removeAdjListNode(j);
@@ -206,7 +209,6 @@ public:
         newNode->data = data;
         newNode->next = NULL;
         newNode->prev = NULL;
-        newNode->degreeListPointer = NULL;
         return newNode;
     }
 
@@ -229,7 +231,7 @@ public:
     void addEdgeToDegreeList(int src, int data,Graph& edgeList) {
         AdjListNode *newNode = newAdjListNode(data);
         if(edgeList.array[data].head!=NULL) {
-            edgeList.array[data].head->degreeListPointer = newNode;
+            edgeList.array[data].degreeListPointer = newNode;
         }
         newNode->prev = array[src].tail;
         newNode->next = NULL;
@@ -263,7 +265,7 @@ public:
 
     //used to make sure the pointer from graph to degree list is correct
     void testPtr(int v){
-        cout<<array[v].head->degreeListPointer->data<<endl;
+        cout<<array[v].degreeListPointer->data<<endl;
     }
 
 
@@ -275,6 +277,7 @@ public:
             cout << "\n Vertices with Degree " << v << "\n head ";
             while (pCrawl) {
                 cout << "-> " << pCrawl->data;
+//                cout<<(pCrawl->next==nullptr)<<endl;
                 pCrawl = pCrawl->next;
             }
             cout << "-> tail";

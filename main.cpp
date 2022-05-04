@@ -8,16 +8,22 @@ using namespace std::chrono;
 
 
 int main() {
-    int V = 1000 ;
-    int E = 5000;
+    int V = 10;
+    int E = 25;
     Graph graph(V);
     // Create graph
     graph.genGraph(V,E,"RANDOM","UNIFORM");
     graph.printGraph();
     Runner runner(graph);
     runner.genDegreeList();
-    runner.deleteSmallestDegree();
-    graph.printGraph();
+//    runner.deleteSmallestDegree();
+//    graph.printGraph();
+//    runner.deleteSmallestDegree();
+//    runner.deleteSmallestDegree();
+//    runner.deleteSmallestDegree();
+//    runner.deleteSmallestDegree();
+    runner.deleteAll();
+//    graph.printGraph();
 
     return 0;
 }

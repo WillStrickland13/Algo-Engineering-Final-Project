@@ -21,6 +21,7 @@ public:
     void genDegreeList();
     AdjListNode* getSmallestDegree();
     void deleteSmallestDegree();
+    void deleteAll();
 };
 
 

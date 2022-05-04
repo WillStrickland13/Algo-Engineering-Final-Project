@@ -28,6 +28,10 @@ void Runner::removeVertex(int v) {
 
     //need to go through all vertices with v as an edge and remove v from their edges
     //and update the degree list
+
+    int degree=edgeList.getDegree(v);
+    degreeList[degree].removeAdjListNodeByVertex(v);
+
     for(int i=0;i<edgeList[v].size();i++){
         //get edge of vertex to remove
         int index=edgeList[v][i].data;
@@ -37,42 +41,45 @@ void Runner::removeVertex(int v) {
                 cout<<"index = "<<index<<" j = "<<j<<endl;
                 //only first index has a degree list pointer
 
-                AdjListNode* degreePointerToChange = edgeList[index].head->degreeListPointer;
+                AdjListNode* degreePointerToChange = edgeList[index].degreeListPointer;
+                cout<<"test";
                 int currDegree=edgeList.getDegree(index);
 
                 if(degreeList[currDegree-1].head!=nullptr) {
 
 
                     //first remove node from current degree list
-                    //cout<<"test1"<<endl;
+                    cout<<"test1"<<endl;
                     degreeList[currDegree].removeAdjListNodeByVertex(degreePointerToChange->data);
-
+                    degreeList.addEdgeToDegreeList(currDegree - 1, degreePointerToChange->data, degreeList);
                     //then append node to the end of degree list -1
-                    //cout<<"test2"<<endl;
-                    degreePointerToChange->next=nullptr;
-                    //cout<<"test3"<<endl;
-                    degreePointerToChange->prev=degreeList[currDegree - 1].tail;
-                    //cout<<"test4"<<endl;
-                    degreeList[currDegree - 1].tail = degreePointerToChange;
-                    //cout<<"test5"<<endl;
-                    degreePointerToChange->prev->next = degreePointerToChange;
+//                    cout<<"test2"<<endl;
+//                    degreePointerToChange->next=nullptr;
+//                    cout<<"test3"<<endl;
+//                    degreePointerToChange->prev=degreeList[currDegree - 1].tail;
+//                    cout<<"test4"<<endl;
+//                    degreeList[currDegree - 1].tail = degreePointerToChange;
+//                    cout<<"test5"<<endl;
+//                    degreePointerToChange->prev->next = degreePointerToChange;
 
                 }
                 //  case to handle if the degree list -1 is empty
                 else{
+                    degreeList[currDegree].removeAdjListNodeByVertex(degreePointerToChange->data);
+                    degreeList.addEdgeToDegreeList(currDegree - 1, degreePointerToChange->data, degreeList);
 
                     //cout<<"test6"<<endl;
-                    degreeList[currDegree-1].head=degreePointerToChange;
-                    //cout<<"test7"<<endl;
-                    degreeList[currDegree-1].tail=degreePointerToChange;
+//                    degreeList[currDegree-1].head=degreePointerToChange;
+//                    //cout<<"test7"<<endl;
+//                    degreeList[currDegree-1].tail=degreePointerToChange;
                     //cout<<"test8"<<endl;
-                    degreeList[currDegree].removeAdjListNodeByVertex(degreePointerToChange->data);
                     //cout<<"test9"<<endl;
 
                 }
 
                 //finally remove the edge from the graph
-                edgeList[index].removeAdjListNode(j);
+                cout<<"deleting edge "<<v<<endl;
+                edgeList[index].removeAdjListNodeByVertex(v);
                 cout<<"done"<<endl;
 
                 break;
@@ -103,4 +110,11 @@ void Runner::deleteSmallestDegree() {
     AdjListNode* toDelete = getSmallestDegree();
     orderDeletedList.addAdjListNode(toDelete);
     removeVertex(toDelete->data);
+}
+
+void Runner::deleteAll(){
+    int numVertices=edgeList.getNumVertices();
+    for(int i=0;i<numVertices;i++){
+        deleteSmallestDegree();
+    }
 }
