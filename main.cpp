@@ -16,14 +16,8 @@ int main() {
     graph.printGraph();
     Runner runner(graph);
     runner.genDegreeList();
-//    runner.deleteSmallestDegree();
-//    graph.printGraph();
-//    runner.deleteSmallestDegree();
-//    runner.deleteSmallestDegree();
-//    runner.deleteSmallestDegree();
-//    runner.deleteSmallestDegree();
     runner.deleteAll();
 //    graph.printGraph();
-
+//    runner.printOrderDeletedList();
     return 0;
 }

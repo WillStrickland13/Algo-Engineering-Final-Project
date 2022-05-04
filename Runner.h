@@ -7,6 +7,7 @@
 
 #include "Vertex.h"
 #include "Graph.h"
+#include <vector>
 using namespace std;
 class Runner {
 private:
@@ -20,8 +21,9 @@ public:
     void removeVertex(int v);
     void genDegreeList();
     AdjListNode* getSmallestDegree();
-    void deleteSmallestDegree();
+    int deleteSmallestDegree();
     void deleteAll();
+    void printOrderDeletedList();
 };
 
 

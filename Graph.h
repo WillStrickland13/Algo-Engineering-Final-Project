@@ -28,6 +28,7 @@ struct AdjList {
     struct AdjListNode *head;
     struct AdjListNode *tail;
     struct AdjListNode *degreeListPointer;
+    int color;
     AdjListNode& operator[](int index)
     {
         AdjListNode* node = head;
@@ -119,6 +120,16 @@ struct AdjList {
             node = node->next;
             i++;
         }
+    }
+
+    void printAdjList(){
+        AdjListNode* node = head;
+        while (node != nullptr)
+        {
+            cout<<node->data<<" ";
+            node = node->next;
+        }
+        cout<<endl;
     }
 };
 
