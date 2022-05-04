@@ -91,26 +91,32 @@ struct AdjList {
     }
 
     void removeAdjListNodeByVertex(int v){
+        cout<<"deleting node with vertex "<<v<<endl;
         AdjListNode* node = head;
+        cout<<head->data<<endl;
         while (node != nullptr)
         {
             if (node->data == v)
             {
-                if (node->prev != nullptr)
-                {
-                    node->prev->next = node->next;
-                }
-                if (node->next != nullptr)
-                {
-                    node->next->prev = node->prev;
-                }
-                if (node == head)
-                {
+                cout<<"found node with vertex "<<v<<endl;
+
+                if(node==head){
                     head = node->next;
                 }
-                if (node == tail)
-                {
+                if(node==tail){
                     tail = node->prev;
+                }
+                if(node->next!=nullptr){
+                    node->next->prev = node->prev;
+                }
+                if(node->prev!=nullptr){
+                    node->prev->next = node->next;
+                }
+                if(node->next==nullptr){
+                    tail = node->prev;
+                }
+                if(node->prev==nullptr){
+                    head = node->next;
                 }
                 return;
             }
@@ -273,9 +279,15 @@ public:
         for (v = 0; v <= V-1; ++v) {
             AdjListNode *pCrawl = array[v].head;
             cout << "\n Vertices with Degree " << v << "\n head ";
-            while (pCrawl) {
-                cout << "-> " << pCrawl->data;
-                pCrawl = pCrawl->next;
+            if(pCrawl!=nullptr){
+                while (pCrawl) {
+
+                    //cout<<"in degree "<<v<<" "<<(pCrawl->next==nullptr)<<" "<<endl;
+//                    cout<<"next "<<pCrawl->next->data<<endl;
+
+                    cout << "-> " << pCrawl->data;
+                    pCrawl = pCrawl->next;
+                }
             }
             cout << "-> tail";
             cout << endl;
@@ -487,7 +499,7 @@ public:
 };
 
 //
-//void printSerialization(Graph g, int V) {
+//void Serialization(Graph g, int V) {
 //    ofstream myFile;
 //    myFile.open("output.txt");
 //    myFile << V << endl;

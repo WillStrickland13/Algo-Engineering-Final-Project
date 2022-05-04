@@ -8,8 +8,8 @@ using namespace std::chrono;
 
 
 int main() {
-    int V = 1000 ;
-    int E = 5000;
+    int V = 5;
+    int E = 8;
     Graph graph(V);
     // Create graph
     graph.genGraph(V,E,"RANDOM","UNIFORM");
@@ -17,6 +17,8 @@ int main() {
     Runner runner(graph);
     runner.genDegreeList();
     runner.deleteSmallestDegree();
+
+    //runner.deleteSmallestDegree();
     graph.printGraph();
 
     return 0;
