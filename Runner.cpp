@@ -12,15 +12,18 @@ Runner::Runner(Graph edgeList) {
     this->edgeList = edgeList;
     Graph degreeList(edgeList.getNumVertices());
     this->degreeList = degreeList;
+    this->edgeListTemp = edgeListTemp;
 }
 
 void Runner::genDegreeList(){
     int v;
-
+    cout<<"degreeList"<<endl;
     for (v = 0; v < edgeList.getNumVertices(); v++) {
         degreeList.addEdgeToDegreeList(edgeList.getDegree(v), v,edgeList);
     }
-    edgeListTemp=edgeList;
+    cout<<"Starting to copy"<<endl;
+    edgeListTemp=edgeList.copyGraph();
+    cout<<"done"<<endl;
     degreeList.printDegreeGraph();
 }
 
@@ -100,14 +103,43 @@ void Runner::deleteAll(){
     for(int i =0;i<orderDeleted.size();i++){
         cout<<orderDeleted[i]<<" ";
     }
-
+    colorGraph(orderDeleted);
 }
 
-void Runner::printOrderDeletedList(){
-    orderDeletedList.printAdjList();
-//    for(int i=0;i<order.size();i++){
-//        cout<<order[i]<<" ";
-//    }
+void Runner::colorGraph(vector<int>& orderDeleted) {
+    cout<<"Printing temp graph"<<endl;
+    //edgeListTemp.printGraph();
+    for(int i = 0;i<orderDeleted.size();i++){
+        int vertex=orderDeleted[i];
+        int color= getColorToUse(vertex);
+        edgeListTemp[vertex].color=color;
+        cout<<"vertex "<<vertex<<" color "<<color<<endl;
+
+
+    }
+}
+int Runner::getColorToUse(int v){
+    //get the
+    AdjListNode* node = edgeListTemp[v].head;
+    set<int> colors={-1};
+    while (node != nullptr)
+    {
+        colors.insert(edgeListTemp[node->data].color);
+        node = node->next;
+    }
+    for(int i = 0;i < colors.size();i++){
+        if(colors.find(i)==colors.end()){
+            cout<<"FOUND COLOR "<<i<<endl;
+            return i;
+        }
+    }
+    return colors.size();
 }
 
-
+void Runner::printColors() {
+    cout<<endl;
+    for(int i=0;i<edgeListTemp.getNumVertices();i++){
+        cout<<"Color of vertex "<<i<<": "<<edgeListTemp[i].color<<endl;
+    }
+    cout<<endl;
+}

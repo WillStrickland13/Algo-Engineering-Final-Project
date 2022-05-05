@@ -9,7 +9,7 @@ using namespace std::chrono;
 
 int main() {
     int V = 10;
-    int E = 25;
+    int E = 20;
     Graph graph(V);
     // Create graph
     graph.genGraph(V,E,"RANDOM","UNIFORM");
@@ -17,7 +17,7 @@ int main() {
     Runner runner(graph);
     runner.genDegreeList();
     runner.deleteAll();
-//    graph.printGraph();
-//    runner.printOrderDeletedList();
+    cout<<"Printing colors"<<endl;
+    runner.printColors();
     return 0;
 }

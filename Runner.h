@@ -23,7 +23,9 @@ public:
     AdjListNode* getSmallestDegree();
     int deleteSmallestDegree();
     void deleteAll();
-    void printOrderDeletedList();
+    void colorGraph(vector<int>&);
+    int getColorToUse(int);
+    void printColors();
 };
 
 

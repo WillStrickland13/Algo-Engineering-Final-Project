@@ -10,128 +10,10 @@
 #include <fstream>
 #include <chrono>
 #include <random>
+#include "AdjList.h"
 using namespace std;
 using namespace std::chrono;
 
-struct AdjListNode {
-    int data;
-    struct AdjListNode *next;
-    struct AdjListNode *prev;
-
-    int degree;
-};
-
-/*
- * Adjacency List
- */
-struct AdjList {
-    struct AdjListNode *head;
-    struct AdjListNode *tail;
-    struct AdjListNode *degreeListPointer;
-    int color;
-    AdjListNode& operator[](int index)
-    {
-        AdjListNode* node = head;
-        for (int i = 0; i < index; i++)
-        {
-            node = node->next;
-        }
-        return *node;
-    }
-    int size()
-    {
-        int count = 0;
-        AdjListNode* node = head;
-        while (node != nullptr)
-        {
-            count++;
-            node = node->next;
-        }
-        return count;
-    }
-    void addAdjListNode(AdjListNode* newNode)
-    {
-
-        if (head == nullptr)
-        {
-            head = newNode;
-            tail = newNode;
-        }
-        else
-        {
-            tail->next = newNode;
-            newNode->prev = tail;
-            tail = newNode;
-        }
-    }
-    void removeAdjListNode(int index){
-        cout<<"starting deletion"<<endl;
-        AdjListNode* node = head;
-        for (int i = 0; i < index; i++)
-        {
-            node = node->next;
-        }
-        if (node->prev != nullptr)
-        {
-            node->prev->next = node->next;
-        }
-        if (node->next != nullptr)
-        {
-            node->next->prev = node->prev;
-        }
-        if (node == head)
-        {
-            head = node->next;
-        }
-        if (node == tail)
-        {
-            tail = node->prev;
-        }
-        delete node;
-
-        cout<< "Node removed" << endl;
-    }
-
-    void removeAdjListNodeByVertex(int v){
-        AdjListNode* node = head;
-        int i=0;
-        while (node != nullptr)
-        {
-            if (node->data == v)
-            {
-                if (node->prev != nullptr)
-                {
-                    node->prev->next = node->next;
-                }
-                if (node->next != nullptr)
-                {
-                    node->next->prev = node->prev;
-                }
-                if (node == head)
-                {
-                    head = node->next;
-                }
-                if (node == tail)
-                {
-                    tail = node->prev;
-                }
-                return;
-            }
-            node = node->next;
-            i++;
-        }
-    }
-
-    void printAdjList(){
-        AdjListNode* node = head;
-        while (node != nullptr)
-        {
-            cout<<node->data<<" ";
-            node = node->next;
-        }
-        cout<<endl;
-    }
-};
 
 class Graph {
 
@@ -148,8 +30,8 @@ public:
 
         E = 0;
         array = new AdjList[V];
-        array[0].head = NULL;
-        array[0].tail = NULL;
+        array[0].head = nullptr;
+        array[0].tail = nullptr;
     }
 
     //create a graph with V vertices
@@ -157,10 +39,29 @@ public:
         this->V = V;
         array = new AdjList[V];
         for (int i = 0; i < V; ++i) {
-            array[i].head = NULL;
-            array[i].tail = NULL;
+            array[i].head = nullptr;
+            array[i].tail = nullptr;
         }
     }
+    Graph copyGraph() {
+        Graph g2(V);
+        g2.E = E;
+        for (int i = 0; i < V; i++) {
+            AdjListNode *temp;
+            AdjListNode *index=array[i].head;
+            while (index != nullptr) {
+                temp = new AdjListNode;
+                temp->data= index->data;
+                g2.array[i].addAdjListNode(temp);
+                index=index->next;
+            }
+
+        }
+        g2.printGraph();
+        cout<<"finished copying"<<endl;
+        return g2;
+    }
+
 
     void removeVertex(int v) {
         //need to go through all vertices with v as an edge and remove v from their edges
@@ -182,7 +83,7 @@ public:
 
 
         //then set v to null
-        array[v].head = NULL;
+        array[v].head = nullptr;
 
 
 
@@ -218,8 +119,8 @@ public:
     AdjListNode *newAdjListNode(int data) {
         AdjListNode *newNode = new AdjListNode;
         newNode->data = data;
-        newNode->next = NULL;
-        newNode->prev = NULL;
+        newNode->next = nullptr;
+        newNode->prev = nullptr;
         return newNode;
     }
 
@@ -229,9 +130,9 @@ public:
     void addEdge(int src, int data) {
         AdjListNode *newNode = newAdjListNode(data);
         newNode->prev = array[src].tail;
-        newNode->next = NULL;
+        newNode->next = nullptr;
         array[src].tail = newNode;
-        if (array[src].head == NULL)
+        if (array[src].head == nullptr)
             array[src].head = newNode;
         else
             newNode->prev->next = newNode;
@@ -241,13 +142,13 @@ public:
     //used to create the degree list graph, and adds a pointer to the degree list for each node in original graph
     void addEdgeToDegreeList(int src, int data,Graph& edgeList) {
         AdjListNode *newNode = newAdjListNode(data);
-        if(edgeList.array[data].head!=NULL) {
+        if(edgeList.array[data].head!=nullptr) {
             edgeList.array[data].degreeListPointer = newNode;
         }
         newNode->prev = array[src].tail;
-        newNode->next = NULL;
+        newNode->next = nullptr;
         array[src].tail = newNode;
-        if (array[src].head == NULL)
+        if (array[src].head == nullptr)
             array[src].head = newNode;
         else
             newNode->prev->next = newNode;
@@ -260,7 +161,7 @@ public:
     void printGraph() {
         int v;
         for (v = 0; v < V; ++v) {
-            if(array[v].head!=NULL) {
+            if(array[v].head!=nullptr) {
                 AdjListNode *pCrawl = array[v].head;
 
                 cout << "\n Adjacency list of vertex " << v << "\n head ";
@@ -327,7 +228,7 @@ public:
         this->V = V;
         array = new AdjList[V];
         for (int i = 0; i < V; ++i) {
-            array[i].head = NULL;
+            array[i].head = nullptr;
             array[i].tail = NULL;
         }
 
@@ -351,8 +252,8 @@ public:
         this->V = V;
         array = new AdjList[V];
         for (int i = 0; i < V; ++i) {
-            array[i].head = NULL;
-            array[i].tail = NULL;
+            array[i].head = nullptr;
+            array[i].tail = nullptr;
         }
         auto start = chrono::high_resolution_clock::now();
 
