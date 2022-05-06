@@ -14,6 +14,7 @@ private:
     Graph edgeList;
     Graph edgeListTemp;
     Graph degreeList;
+    vector<int> degreeWhenDeleted;
     AdjList orderDeletedList;
 public:
     Runner(Graph, Graph, AdjList);
@@ -21,10 +22,15 @@ public:
     void removeVertex(int v);
     void genDegreeList();
     AdjListNode* getSmallestDegree();
+    AdjListNode* getSmallestOriginalDegree();
     int deleteSmallestDegree();
-    void deleteAll();
+    void SLVO();
+    void SFVO();
     void colorGraph(vector<int>&);
+    void colorGraphSLVO(vector<int>&);
     int getColorToUse(int);
+    void SODO();
+    void URO();
     void printColors();
 };
 

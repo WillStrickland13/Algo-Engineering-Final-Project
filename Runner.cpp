@@ -70,11 +70,13 @@ void Runner::removeVertex(int v) {
 
 }
 
+
 AdjListNode* Runner::getSmallestDegree() {
     AdjListNode *temp;
     for(int i=0;i<degreeList.getNumVertices();i++){
         if(degreeList[i].head!=NULL){
             temp = degreeList[i].head;
+            degreeWhenDeleted.insert(degreeWhenDeleted.begin(),i);
             return temp;
         }
     }
@@ -83,6 +85,7 @@ AdjListNode* Runner::getSmallestDegree() {
 
 int Runner::deleteSmallestDegree() {
     AdjListNode* toDelete = getSmallestDegree();
+
     int degree = toDelete->data;
 //    orderDeletedList.addAdjListNode(toDelete);
     removeVertex(toDelete->data);
@@ -90,7 +93,27 @@ int Runner::deleteSmallestDegree() {
 
 }
 
-void Runner::deleteAll(){
+// smallest last vertex ordering
+void Runner::SLVO(){
+    int numVertices=edgeList.getNumVertices();
+    vector<int> orderDeleted;
+    vector<int> degreeWhenDeleted;
+    int vertex;
+    for(int i=0;i<numVertices;i++){
+        vertex= (deleteSmallestDegree());
+        //orderDeleted.push_back(vertex);
+        orderDeleted.insert(orderDeleted.begin(),vertex);
+    }
+
+
+//    for(int i =0;i<orderDeleted.size();i++){
+//        cout<<orderDeleted[i]<<" ";
+//    }
+    colorGraphSLVO(orderDeleted);
+}
+
+// This is my ordering function that orders by smallest first vertex ordering
+void Runner::SFVO(){
     int numVertices=edgeList.getNumVertices();
     vector<int> orderDeleted;
     int vertex;
@@ -99,24 +122,92 @@ void Runner::deleteAll(){
         orderDeleted.push_back(vertex);
     }
 
-
-    for(int i =0;i<orderDeleted.size();i++){
-        cout<<orderDeleted[i]<<" ";
-    }
+//
+//    for(int i =0;i<orderDeleted.size();i++){
+//        cout<<orderDeleted[i]<<" ";
+//    }
     colorGraph(orderDeleted);
 }
 
+//Smallest original degree ordering
+void Runner::SODO() {
+    int numVertices=edgeList.getNumVertices();
+    vector<int> orderDeleted;
+    int vertex;
+    for(int i=0;i<degreeList.getNumVertices();i++){
+        for(int j=0;j<degreeList[i].size();j++) {
+            orderDeleted.insert(orderDeleted.begin(), degreeList[i][j].data);
+        }
+    }
+//    for(int i =0;i<orderDeleted.size();i++){
+//        cout<<orderDeleted[i]<<" ";
+//    }
+    colorGraph(orderDeleted);
+}
+//uniform random ordering
+void Runner::URO() {
+    int numVertices=edgeList.getNumVertices();
+    int vertex;
+    vector<int> vertexList;
+    for(int i=0;i<numVertices;i++){
+        vertexList.push_back(i);
+    }
+    shuffle(vertexList.begin(), vertexList.end(), default_random_engine(random_device()()));
+    colorGraph(vertexList);
+
+}
+
 void Runner::colorGraph(vector<int>& orderDeleted) {
+    ofstream outFile;
+    outFile.open("output.txt");
+    outFile<<"VERTEX_NUMBER \t COLOR_NUMBER"<<endl;
     cout<<"Printing temp graph"<<endl;
     //edgeListTemp.printGraph();
+    int highestColor=0;
     for(int i = 0;i<orderDeleted.size();i++){
         int vertex=orderDeleted[i];
         int color= getColorToUse(vertex);
         edgeListTemp[vertex].color=color;
-        cout<<"vertex "<<vertex<<" color "<<color<<endl;
+        outFile<<vertex<<"\t"<<color<<endl;
+        cout<<"vertex: "<<vertex<<" original degree: "<<edgeListTemp.getDegree(vertex)<<" color: "<<color<<endl;
+        if(color>highestColor){
+            highestColor=color;
+        }
 
 
     }
+    cout<<"highest color = "<<highestColor<<endl;
+}
+void Runner::colorGraphSLVO(vector<int>& orderDeleted) {
+    ofstream outFile;
+    outFile.open("output.txt");
+    outFile<<"VERTEX_NUMBER \t COLOR_NUMBER"<<endl;
+    cout<<"Printing temp graph"<<endl;
+    //edgeListTemp.printGraph();
+    int highestColor=0;
+    int terminalCliqueSize=-1;
+    bool done=false;
+    for(int i = 0;i<orderDeleted.size();i++){
+        int vertex=orderDeleted[i];
+        int color= getColorToUse(vertex);
+        edgeListTemp[vertex].color=color;
+        cout<<"vertex: "<<vertex<<" original degree: "<<edgeListTemp.getDegree(vertex)<<" degree when deleted: "<<degreeWhenDeleted[i]<<" color: "<<color<<endl;
+        outFile<<vertex<<"\t"<<color<<endl;
+        if(color>highestColor){
+            highestColor=color;
+        }
+        if(color==terminalCliqueSize+1&&!done){
+            terminalCliqueSize=color;
+        }
+        else
+            done=true;
+
+
+
+    }
+    cout<<"highest color = "<<highestColor<<endl;
+    cout<<"max degree when deleted: "<<*max_element(degreeWhenDeleted.begin(),degreeWhenDeleted.end())<<endl;
+    cout<<"terminal clique size: "<<terminalCliqueSize<<endl;
 }
 int Runner::getColorToUse(int v){
     //get the
@@ -129,12 +220,13 @@ int Runner::getColorToUse(int v){
     }
     for(int i = 0;i < colors.size();i++){
         if(colors.find(i)==colors.end()){
-            cout<<"FOUND COLOR "<<i<<endl;
             return i;
         }
     }
     return colors.size();
 }
+
+
 
 void Runner::printColors() {
     cout<<endl;
@@ -143,3 +235,4 @@ void Runner::printColors() {
     }
     cout<<endl;
 }
+

@@ -8,16 +8,14 @@ using namespace std::chrono;
 
 
 int main() {
-    int V = 10;
-    int E = 20;
+    int V = 100;
+    int E = 4000;
     Graph graph(V);
     // Create graph
-    graph.genGraph(V,E,"RANDOM","UNIFORM");
+    graph.genGraph(V,E,"RANDOM","YOURS");
     graph.printGraph();
     Runner runner(graph);
     runner.genDegreeList();
-    runner.deleteAll();
-    cout<<"Printing colors"<<endl;
-    runner.printColors();
+    runner.SLVO();
     return 0;
 }

@@ -10,6 +10,7 @@
 #include <fstream>
 #include <chrono>
 #include <random>
+#include <algorithm>
 #include "AdjList.h"
 using namespace std;
 using namespace std::chrono;
@@ -292,6 +293,18 @@ public:
         return distribution(generator);
 
     }
+    int genSkewedReverseNum(vector<int> nums){
+        //set seed
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        //set generator
+        static std::default_random_engine generator(seed);
+        reverse(nums.begin(), nums.end());
+
+        //generate skewed random number with smaller numbs being more likely
+        std::discrete_distribution<int> distribution(nums.begin(), nums.end());
+        return distribution(generator);
+
+    }
 
     //generate a normal number, used for creating a normal index of the enumerated index
     int genNormalNum(int size){
@@ -301,7 +314,8 @@ public:
         static std::default_random_engine generator(seed);
 
         //generate skewed random number with smaller numbs being more likely
-        std::normal_distribution<double> distribution((size/2+1), (size/5));
+        std::exponential_distribution<int> distribution(1);
+
         return distribution(generator);
 
     }
@@ -365,14 +379,14 @@ public:
                 //this distribution is normal
                 else if (distribution == "YOURS") {
                     //get skewed index from list of enumerated edges and add it to the graph
-                    int normalIndex = genNormalNum(nums.size()-1);
+                    int skewedReverseIndex = genSkewedReverseNum(nums);
 
                     //make edge to go both ways
-                    addEdge(enumerated_edges[normalIndex].first, enumerated_edges[normalIndex].second);
-                    addEdge(enumerated_edges[normalIndex].second, enumerated_edges[normalIndex].first);
+                    addEdge(enumerated_edges[skewedReverseIndex].first, enumerated_edges[skewedReverseIndex].second);
+                    addEdge(enumerated_edges[skewedReverseIndex].second, enumerated_edges[skewedReverseIndex].first);
                     //remove edge from list of enumerated edges once it is added to the graph
-                    enumerated_edges.erase(enumerated_edges.begin() + normalIndex);
-                    nums.erase(nums.begin() + normalIndex);
+                    enumerated_edges.erase(enumerated_edges.begin() + skewedReverseIndex);
+                    nums.erase(nums.begin() + skewedReverseIndex);
                 }
             }
         }
